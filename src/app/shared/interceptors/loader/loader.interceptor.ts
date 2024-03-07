@@ -28,5 +28,4 @@ export class LoaderInterceptor implements HttpInterceptor {
   }
 }
 
-
 export default LoaderInterceptor;
