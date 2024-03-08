@@ -10,9 +10,7 @@ export class AdviceAPIService {
   public advice!: IAdvice;
   public _advice: BehaviorSubject<IAdvice>;
 
-  private http = inject(HttpClient);
-
-  constructor() {
+  constructor(private http: HttpClient) {
     this.advice = {
       id: 150,
       advice: 'The most important thing is the thing most easily forgotten.',
@@ -20,7 +18,7 @@ export class AdviceAPIService {
     this._advice = new BehaviorSubject(this.advice);
   }
 
-  private fetchAdvice = (): Observable<IAdviceResponse> => {
+  fetchAdvice = (): Observable<IAdviceResponse> => {
     return this.http.get<IAdviceResponse>('https://api.adviceslip.com/advice');
   };
 
@@ -34,6 +32,7 @@ export class AdviceAPIService {
       .subscribe({
         next: (res) => {
           this.advice = res.slip;
+          this._advice.next(this.advice);
         },
         error: (err) => {
           this.advice = {
@@ -41,8 +40,9 @@ export class AdviceAPIService {
             advice:
               'The most important thing is the thing most easily forgotten.',
           };
+          this._advice.next(this.advice);
         },
       })
-      .add(() => this._advice.next(this.advice));
+      .unsubscribe();
   };
 }

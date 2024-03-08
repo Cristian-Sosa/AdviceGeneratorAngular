@@ -5,6 +5,7 @@ import { AdviceAPIService } from '../../../shared';
   selector: 'app-card',
   standalone: true,
   imports: [],
+  providers: [AdviceAPIService],
   templateUrl: './card.component.html',
   styleUrl: './card.component.sass',
 })
@@ -12,9 +13,7 @@ export class CardComponent {
   public advice: { id: number; advice: string };
   public isLoading: boolean = true;
 
-  private adviceSrv = inject(AdviceAPIService);
-
-  constructor() {
+  constructor(private adviceSrv: AdviceAPIService) {
     this.advice = {
       id: 150,
       advice: 'The most important thing is the thing most easily forgotten.',

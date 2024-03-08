@@ -8,13 +8,14 @@ import { CardComponent, LoaderComponent } from './core';
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, LoaderComponent, CardComponent],
+  providers: [LoaderService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.sass',
 })
 export class AppComponent implements OnInit {
   public isLoading: boolean = true;
 
-  private loaderSrv = inject(LoaderService);
+  constructor(private loaderSrv: LoaderService) {}
 
   ngOnInit(): void {
     this.loaderSrv

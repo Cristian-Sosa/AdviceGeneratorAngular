@@ -4,18 +4,22 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import {
   HTTP_INTERCEPTORS,
-  HttpClientModule,
   provideHttpClient,
   withFetch,
   withInterceptorsFromDi,
 } from '@angular/common/http';
 import loaderInterceptor from './shared/interceptors/loader/loader.interceptor';
 
+import { provideClientHydration } from '@angular/platform-browser';
+import { AdviceAPIService, LoaderService } from './shared';
+
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    provideClientHydration(),
+    provideHttpClient(),
     { provide: HTTP_INTERCEPTORS, useClass: loaderInterceptor, multi: true },
     provideRouter(routes),
-    HttpClientModule,
+    AdviceAPIService,
+    LoaderService
   ],
 };
